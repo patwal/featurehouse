@@ -175,7 +175,7 @@ public abstract class ArtifactBuilder implements ArtifactBuilderInterface {
 			for (String suffix : getSuffixes()) {
 				if (inputFile.getName().endsWith(suffix)) {
 					AbstractFSTParser.fstnodes.add(0, new FSTNonTerminal(
-							"language", suffix));
+							"language", suffix)); 
 					return true;
 				}
 			}

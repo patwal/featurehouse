@@ -159,7 +159,8 @@ iterateRight() {
 
 mergeFiles() {
 	# applyMerge
-	merge -p -q $1 $2 $3 > $4
+	#merge -p -q $1 $2 $3 > $4
+	git merge-file -p -q --diff3 $1 $2 $3 > $4
 }
 
 createEmptyFile() {

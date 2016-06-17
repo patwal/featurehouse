@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 
 
 import de.ovgu.cide.fstgen.ast.FSTTerminal;
-
+import main.Blame;
 
 public class LineBasedMerger implements MergerInterface {
 
@@ -120,23 +120,15 @@ public class LineBasedMerger implements MergerInterface {
 				}
 				pr.getInputStream().close();
 
-			}/*else{
+			}else{
 				
-				if(this.isMethodOrConstructor(node.getType())){
-					boolean bothVersionsWereEdited = this.bothVersionsWereEdited(tokens);
-					//if(this.atLeastOneVersionWasEdited(tokens)){
-						// call blame
-						
-						if(bothVersionsWereEdited){
-							res = node.getBody();
-							//Blame blame = new Blame();
-							//res = blame.annotateBlame(fileVar1, fileBase, fileVar2);
-							//res = res + "\n" + Blame.BOTH_VERSIONS_WERE_EDITED;
-						}
-					//}
-					
+				if(this.bothVersionsWereEdited(tokens) && 
+						this.isMethodOrConstructor(node.getType())){
+					// call blame
+					Blame blame = new Blame();
+					res = blame.annotateBlame(fileVar1, fileBase, fileVar2);
 				}
-			}*/
+			}
 			//#conflictAnalyzer
 			node.setBody(res);
 
@@ -158,22 +150,12 @@ public class LineBasedMerger implements MergerInterface {
 	}
 
 	/* #conflictsAnalyzer 
-	 * returns true if both versions (left and right) differ from base*/
+	 * only returns true if left and right are different than base,
+	 * and left is different from right*/
 	private boolean bothVersionsWereEdited(String[] tokens){
 		boolean result = false;
 		if( (!tokens[0].equals(tokens[1])) && (!tokens[2].equals(tokens[1])) &&
 				(!tokens[0].equals(tokens[2])) ){
-			result = true;
-		}
-		return result;
-	}
-	
-	/* #conflictsAnalyzer 
-	 * returns true if at least one version (left or right) differs from base*/
-	private boolean atLeastOneVersionWasEdited(String[] tokens){
-		boolean result = false;
-		if( !tokens[0].equals("") && !tokens[2].equals("") && 
-				( !tokens[0].equals(tokens[1]) || !tokens[2].equals(tokens[1]) ) ){
 			result = true;
 		}
 		return result;
